@@ -37,7 +37,7 @@ class User(AbstractBaseUser):
     )
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    name = models.CharField(max_length=50, null=False, blank=False)
+    name = models.CharField(max_length=50, null=True, blank=True)
     GENDER_CHOICES = [
         ('Male', '남성'),
         ('Female', '여성'),
@@ -45,8 +45,8 @@ class User(AbstractBaseUser):
     gender = models.CharField(
         max_length=6, 
         choices=GENDER_CHOICES, 
-        null=False, 
-        blank=False)
+        null=True, 
+        blank=True)
     age = models.IntegerField(null=True, blank=True)
     introduction = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
