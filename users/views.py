@@ -3,9 +3,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from users.serializers import UserSerializer
 from users.models import User
-# 세션 로그인
+# 세션 로그인, 로그아웃 모듈
 from django.contrib.auth import authenticate, login, logout
-
 
 
 class UserView(APIView):
@@ -14,7 +13,7 @@ class UserView(APIView):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+    
     def post(self, request):
         # 회원가입
         serializer = UserSerializer(data=request.data)
@@ -31,9 +30,17 @@ class UserView(APIView):
         pass
 
 class LoginView(APIView):
+    # 유저 로그인
     def post(self, request):
         user = authenticate(request, **request.data)
         if not user:
             return Response({"error": "존재하지 않는 유저입니다."}, status=status.HTTP_400_BAD_REQUEST)
         login(request, user)
         return Response({"message": "로그인 되었습니다."})
+ 
+class LogoutView(APIView):
+    # 유저 로그아웃
+    def post(self, request):
+        logout(request)
+        return Response({"message": "로그아웃 되었습니다."})
+        
