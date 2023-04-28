@@ -9,7 +9,7 @@ class TodolistSerializer (serializers.ModelSerializer):
     
     class Meta:
         model = Todo
-        fields = ("pk", "user", "title", "is_complete", "completion_at")
+        fields = ("id", "user", "title", "is_complete", "completion_at")
 
 class TodolistDetailSerializer (serializers.ModelSerializer):
     user = serializers.SerializerMethodField()

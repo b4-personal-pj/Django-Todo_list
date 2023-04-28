@@ -44,4 +44,9 @@ class TodolistDetailView(APIView):
         
     def delete (self, request, todo_id):
         '''할 일 삭제'''
-        pass
+        todolist = get_object_or_404(Todo, id=todo_id)
+        if request.user == todolist.user:
+            todolist.delete()
+            return Response("할 일을 삭제했습니다.", status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response("본인만 삭제할 수 있습니다.", status=status.HTTP_403_FORBIDDEN)
