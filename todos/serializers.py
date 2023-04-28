@@ -9,4 +9,14 @@ class TodolistSerializer (serializers.ModelSerializer):
     
     class Meta:
         model = Todo
+        fields = ("pk", "user", "title", "is_complete", "completion_at")
+
+class TodolistDetailSerializer (serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+
+    def get_user(self, obj):
+        return obj.user.email
+    
+    class Meta:
+        model = Todo
         fields = "__all__"
