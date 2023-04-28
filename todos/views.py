@@ -22,12 +22,16 @@ class TodolistView(APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+'''본인만 가능'''
 class TodolistDetailView(APIView):
     def get(self, request, todo_id):
         '''특정 할 일 조회'''
         todolist = get_object_or_404(Todo, id=todo_id)
-        serializer = TodolistDetailSerializer(todolist)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if request.user == todolist.user:
+            serializer = TodolistDetailSerializer(todolist)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response("열람할 수 없습니다.", status=status.HTTP_403_FORBIDDEN)
 
     def put (self, request, todo_id):
         '''할 일 수정'''
