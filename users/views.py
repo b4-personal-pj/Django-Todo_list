@@ -40,8 +40,10 @@ class UserView(APIView):
         '''회원 탈퇴'''
         user = get_object_or_404(User, id=user_id)
         if request.user == user:
-            user.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            # user.delete() DB에서 삭제하면 안된다! 
+            user.is_active = False
+            user.save()
+            return Response("삭제되었습니다.", status=status.HTTP_204_NO_CONTENT)
         else:
             return Response("권한이 없습니다.", status=status.HTTP_403_FORBIDDEN)
 
